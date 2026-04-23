@@ -1,0 +1,44 @@
+name: crs-bug-finding-opencode
+type:
+  - bug-finding
+version: 1.0.0
+docker_registry: ghcr.io/team-atlanta/crs-bug-finding-opencode
+
+prepare_phase:
+  hcl: oss-crs/docker-bake.hcl
+
+target_build_phase:
+  - name: default-build
+    dockerfile: oss-crs/builder.Dockerfile
+    outputs:
+      - build
+      - src
+
+crs_run_phase:
+  finder:
+    dockerfile: oss-crs/finder.Dockerfile
+    additional_env:
+      # Default values. To override, set additional_env in compose yaml.
+      CRS_AGENT: opencode
+      # OPENCODE_CLI_VERSION: "1.4.11"   # Optional prepare-phase override for base image build
+      # OPENCODE_MODEL: claude-sonnet-4-5  # LiteLLM model alias to call (matches required_llms)
+      # AGENT_TIMEOUT: "0"                # seconds, 0 = no limit (default)
+
+supported_target:
+  mode:
+    - full
+    - delta
+  language:
+    - c
+    - c++
+    - jvm
+  sanitizer:
+    - address
+  architecture:
+    - x86_64
+
+# Open-source models exposed through the OSS-CRS LiteLLM proxy.
+# Override OPENCODE_MODEL to select among them.
+required_llms:
+  - Qwen/Qwen3-235B-A22B-Instruct-2507
+  - claude-haiku-4-5-20251001
