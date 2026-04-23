@@ -21,7 +21,7 @@ crs_run_phase:
       # Default values. To override, set additional_env in compose yaml.
       CRS_AGENT: opencode
       # OPENCODE_CLI_VERSION: "1.4.11"   # Optional prepare-phase override for base image build
-      # OPENCODE_MODEL: claude-sonnet-4-5  # LiteLLM model alias to call (matches required_llms)
+      # OPENCODE_MODEL: zai-org/GLM-5.1  # LiteLLM model alias to call (matches required_llms)
       # AGENT_TIMEOUT: "0"                # seconds, 0 = no limit (default)
 
 supported_target:
@@ -40,5 +40,4 @@ supported_target:
 # Open-source models exposed through the OSS-CRS LiteLLM proxy.
 # Override OPENCODE_MODEL to select among them.
 required_llms:
-  - Qwen/Qwen3-235B-A22B-Instruct-2507
-  - claude-haiku-4-5-20251001
+  - zai-org/GLM-5.1

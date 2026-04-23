@@ -23,7 +23,7 @@ from pathlib import Path
 
 logger = logging.getLogger("agent.opencode")
 
-_raw_model = os.environ.get("OPENCODE_MODEL", "claude-sonnet-4-5").strip()
+_raw_model = os.environ.get("OPENCODE_MODEL", "zai-org/GLM-5.1").strip()
 # opencode uses "<provider>/<model>" — strip any pre-existing provider prefix
 # the operator may have supplied (we always re-prefix with our litellm provider).
 _OPENCODE_MODEL_NAME = (
