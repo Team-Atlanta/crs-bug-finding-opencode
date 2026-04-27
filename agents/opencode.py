@@ -181,8 +181,9 @@ def _write_bug_hunter_agent(agents_dir: Path) -> Path:
         "You are an expert security researcher. Read AGENTS.md (in the working\n"
         "directory) for full task context, environment paths, the harness, and the\n"
         "submission protocol. Use read/grep/glob/bash tools to investigate the\n"
-        "target codebase. Verify every candidate POV with `libCRS run-pov` before\n"
-        "saving it to the POV directory. Keep going until killed.\n"
+        "target codebase. Verify every candidate POV with `libCRS run-pov` on the\n"
+        "original build (omit `--rebuild-id`) before saving it to the POV directory.\n"
+        "Keep going until killed.\n"
     )
     agent_path = agents_dir / "bug-hunter.md"
     agent_path.write_text(body)

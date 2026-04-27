@@ -7,8 +7,8 @@ You are targeting **{sanitizer}** vulnerabilities in a {language} project.
 
 - **Only the specified harness is in scope.** Do not use other harnesses.
 - **Keep going until killed.** Find as many distinct vulnerabilities as possible.
-- **ALWAYS verify POVs with `libCRS run-pov`.** Do NOT run the harness binary directly. `libCRS run-pov` runs the harness inside the correct target environment.
-- Only save POVs that are **verified** via `libCRS run-pov` (non-zero `retcode`).
+- **ALWAYS verify POVs with `libCRS run-pov`.** Do NOT run the harness binary directly. `libCRS run-pov` runs the harness inside the OSS-CRS target environment.
+- Only save inputs that are **verified** via `libCRS run-pov` on the original build (omit `--rebuild-id`).
 - Never save inputs that don't crash the harness.
 - Boot-time input paths are fixed for this run. No new inputs will appear after startup.
 - Each POV file should trigger a **distinct** vulnerability (different root cause or crash location).
@@ -33,8 +33,8 @@ Download clean source code:
 
 Verify a POV candidate:
   `libCRS run-pov <pov_path> <response_dir> --harness {harness}`
-  - Omit `--rebuild-id` to run against the base (original) build.
-  - Use `--rebuild-id <id>` to run against a patched/instrumented build from `apply-patch-build`.
+  - Omit `--rebuild-id` to run against the base (original) build. This is the only submission-valid check.
+  - Use `--rebuild-id <id>` only to run against a patched/instrumented build from `apply-patch-build`.
 
 Rebuild harness with source modifications (e.g., debug logs):
   `libCRS apply-patch-build <patch.diff> <response_dir>`

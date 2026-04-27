@@ -5,7 +5,7 @@ description: How to verify a candidate POV input using libCRS run-pov
 
 # Verify POV
 
-Test whether a candidate input crashes the harness. This runs inside the target environment (has JVM, ASAN, correct libraries).
+Test whether a candidate input crashes the harness. This runs inside the OSS-CRS target environment (JVM, ASAN, correct libraries).
 
 ## Basic Usage
 
@@ -13,7 +13,7 @@ Test whether a candidate input crashes the harness. This runs inside the target 
 # 1. Write candidate input to a file
 python3 -c "import sys; sys.stdout.buffer.write(b'AAAA' * 50)" > /tmp/candidate.bin
 
-# 2. Run against the harness (omit --rebuild-id to use the base build)
+# 2. Run against the harness on the original build (omit --rebuild-id)
 libCRS run-pov /tmp/candidate.bin /tmp/run_001 \
   --harness {harness}
 
@@ -52,8 +52,8 @@ done
 
 ## Notes
 
-- Omitting `--rebuild-id` runs against the pre-built vulnerable target. Always use this for bug-finding.
-- Use `--rebuild-id <id>` only when testing against a patched/instrumented build from `apply-patch-build`.
+- Omit `--rebuild-id` for any submission check. That runs against the round's original pre-built target.
+- Use `--rebuild-id <id>` only when testing a debug/instrumented build from `apply-patch-build`; crashes seen only there are not submittable.
 - Each run-pov call takes a few seconds (harness startup + execution).
 - No limit on how many times you can call run-pov.
 - **Do NOT run harness binaries directly** — the finder container lacks the target runtime.

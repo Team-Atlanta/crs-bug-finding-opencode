@@ -5,7 +5,7 @@ description: How to rebuild the harness with source modifications using libCRS a
 
 # Rebuild Harness
 
-Rebuild the harness after modifying source code (e.g., adding debug logs, instrumentation, or testing a hypothesis). Uses the builder sidecar to compile inside the target environment.
+Rebuild the harness after modifying source code (e.g., adding debug logs, instrumentation, or testing a hypothesis). Uses the builder sidecar to compile inside the OSS-CRS target environment.
 
 ## When to Use
 
@@ -39,7 +39,7 @@ cat /tmp/build_001/stdout.log
 # 5. Get the rebuild ID (only exists if build succeeded)
 cat /tmp/build_001/rebuild_id
 
-# 6. Run POV against the new build
+# 6. Run POV against the new debug build
 libCRS run-pov /tmp/candidate.bin /tmp/run_debug \
   --harness {harness} --rebuild-id $(cat /tmp/build_001/rebuild_id)
 
@@ -58,7 +58,7 @@ cd {source_dir}
 git add -A
 git diff --cached > /tmp/debug_trace.diff
 
-# Build and test
+# Build and test on the debug build
 libCRS apply-patch-build /tmp/debug_trace.diff /tmp/build_debug
 REBUILD_ID=$(cat /tmp/build_debug/rebuild_id)
 
@@ -74,5 +74,5 @@ cat /tmp/run_debug/stderr.log
 - Rebuild IDs are content-addressed: same patch → same rebuild ID (cached).
 - Failed builds are NOT cached — you can fix and retry.
 - Always reset source after debugging: `git checkout -- .`
-- For final POV verification, omit `--rebuild-id` (runs against the original vulnerable build), not your debug build.
+- Patch builds are for debugging only. Before saving a POV, rerun `libCRS run-pov` without `--rebuild-id` against the original build.
 - Builds can be slow (recompiles the full project). Review your diff before building.
