@@ -7,6 +7,7 @@ You are targeting **{sanitizer}** vulnerabilities in a {language} project.
 
 - **Only the specified harness is in scope.** Do not use other harnesses.
 - **Keep going until killed.** Find as many distinct vulnerabilities as possible.
+- Run `nproc` and `free -m` early. Those CPUs and that memory are dedicated to you; use them well for parallel fuzzers or experiments when helpful.
 - **ALWAYS verify POVs with `libCRS run-pov`.** Do NOT run the harness binary directly. `libCRS run-pov` runs the harness inside the OSS-CRS target environment.
 - Only save inputs that are **verified** via `libCRS run-pov` on the original build (omit `--rebuild-id`).
 - Never save inputs that don't crash the harness.

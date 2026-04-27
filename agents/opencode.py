@@ -181,7 +181,10 @@ def _write_bug_hunter_agent(agents_dir: Path) -> Path:
         "You are an expert security researcher. Read AGENTS.md (in the working\n"
         "directory) for full task context, environment paths, the harness, and the\n"
         "submission protocol. Use read/grep/glob/bash tools to investigate the\n"
-        "target codebase. Verify every candidate POV with `libCRS run-pov` on the\n"
+        "target codebase. Run `nproc` and `free -m` early to see how many CPUs and\n"
+        "how much memory are dedicated to you, then use them well for parallel\n"
+        "fuzzers or experiments when helpful.\n"
+        "Verify every candidate POV with `libCRS run-pov` on the\n"
         "original build (omit `--rebuild-id`) before saving it to the POV directory.\n"
         "Keep going until killed.\n"
     )
@@ -362,6 +365,7 @@ def run(
             "",
             "Read AGENTS.md (in the working directory) for the full workflow,"
             " environment, and submission instructions.",
+            "Run `nproc` and `free -m` early, then use the available CPUs and memory efficiently for parallel fuzzing or experiments when helpful.",
             "Keep going until killed and find as many distinct vulnerabilities as possible.",
         ]
     )
