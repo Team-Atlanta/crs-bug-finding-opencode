@@ -35,7 +35,7 @@ HARNESS = os.environ.get("OSS_CRS_TARGET_HARNESS", "")
 LANGUAGE = os.environ.get("FUZZING_LANGUAGE", "c")
 SANITIZER = os.environ.get("SANITIZER", "address")
 LLM_API_URL = os.environ.get("OSS_CRS_LLM_API_URL", "")
-LLM_API_KEY = os.environ.get("OSS_CRS_LLM_API_KEY", "")
+LLM_API_KEY = open(os.environ["OSS_CRS_LLM_API_KEY_FILE"]).read().strip() if os.environ.get("OSS_CRS_LLM_API_KEY_FILE") else os.environ.get("OSS_CRS_LLM_API_KEY", "")
 
 CRS_AGENT = os.environ.get("CRS_AGENT", "opencode")
 
@@ -155,12 +155,12 @@ def main():
     except Exception as e:
         logger.warning("Diff fetch failed: %s — delta mode diffs unavailable", e)
 
-    try:
-        seed_files_fetched = crs.fetch(DataType.SEED, SEED_DIR)
-        if seed_files_fetched:
-            logger.info("Fetched %d seed file(s) into %s", len(seed_files_fetched), SEED_DIR)
-    except Exception as e:
-        logger.warning("Seed fetch failed: %s — seeds unavailable", e)
+    # try:
+    #     seed_files_fetched = crs.fetch(DataType.SEED, SEED_DIR)
+    #     if seed_files_fetched:
+    #         logger.info("Fetched %d seed file(s) into %s", len(seed_files_fetched), SEED_DIR)
+    # except Exception as e:
+    #     logger.warning("Seed fetch failed: %s — seeds unavailable", e)
 
     try:
         bug_files_fetched = crs.fetch(DataType.BUG_CANDIDATE, BUG_CANDIDATE_DIR)
@@ -249,10 +249,15 @@ def main():
         "opencode_home": str(opencode_home),
     })
 
-    if run_agent(source_dir, build_dir, agent):
-        logger.info("Agent completed successfully")
-    else:
-        logger.warning("Agent did not report success")
+    iteration = 0
+    while True:
+        iteration += 1
+        logger.info("Starting agent iteration %d", iteration)
+        if run_agent(source_dir, build_dir, agent):
+            logger.info("Agent iteration %d completed successfully", iteration)
+        else:
+            logger.warning("Agent iteration %d did not report success", iteration)
+        logger.info("Restarting agent...")
 
 
 if __name__ == "__main__":
